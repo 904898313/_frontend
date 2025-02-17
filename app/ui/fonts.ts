@@ -1,6 +1,6 @@
 import { ZCOOL_XiaoWei } from 'next/font/google';
 
-export const zcoolXiaoWei = ZCOOL_XiaoWei({
+export const lusitana = ZCOOL_XiaoWei({
     weight: '400',
     subsets: ['latin'],
     display: "swap",
