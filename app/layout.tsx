@@ -1,5 +1,5 @@
-import '@/common/global.css'
-import { lusitana } from '@/common/fonts';
+import '@/lib/global.css'
+import { lusitana } from '@/lib/fonts';
 import Link from "next/link";
 
 export default function RootLayout({
