@@ -1,8 +1,8 @@
 const Page = () => {
     return (
-        <>
-            Page
-        </>
+      <div>
+        Page
+      </div>
     );
 };
 
