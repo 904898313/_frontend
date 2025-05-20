@@ -9,16 +9,15 @@ export default function RootLayout({
 }) {
   return (
       <html lang="en" suppressHydrationWarning>
-          <body className={`${lusitana.className} relative antialiased text-teal-200`}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Header />
-            {children}
-          </ThemeProvider>
+          <body className={`${lusitana.className} relative transition-all duration-500 text-textColor`}>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+            >
+              <Header />
+              {children}
+            </ThemeProvider>
           </body>
       </html>
   );
