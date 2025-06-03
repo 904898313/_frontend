@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { Button } from "@/components/ui/button"
-import GoReadme from "./_components/goReadme"
 
 export default function Page() {
   return (
@@ -15,7 +14,14 @@ export default function Page() {
                       <Button className={"bg-sky-400 border-2 border-transparent hover:border-2 hover:border-teal-200 hover:bg-sky-500"} asChild>
                         <Link href={"/docs"}>Build Website Docs</Link>
                       </Button>
-                      <GoReadme />
+                      <Button
+                        className={
+                          "bg-green-400 border-2 hover:border-2 hover:border-teal-200 hover:bg-green-500"
+                        }
+                        asChild
+                      >
+                        <Link href={"https://904898313.github.io/readme/"}>Build Website Docs</Link>
+                      </Button>
                   </div>
               </div>
           </div>
