@@ -1,8 +1,8 @@
 import '@/lib/global.css'
-import { lusitana } from '@/lib/fonts';
-import { ThemeProvider } from "@/components/theme/theme-provider";
+import { zcoolXiaoWei } from '@/lib/font/fonts';
 import ChangeTheme from "../components/theme/changeTheme";
 import Link from "next/link";
+import Provider from "./Provider";
 
 export default function RootLayout({
   children,
@@ -11,13 +11,8 @@ export default function RootLayout({
 }) {
   return (
       <html lang="en" suppressHydrationWarning>
-          <body className={`${lusitana.className} flex flex-col min-h-screen background relative transition-all duration-500 text-textColor`}>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="dark"
-              enableSystem={false}
-            >
-              {/*header*/}
+          <body className={`${zcoolXiaoWei.className} flex flex-col min-h-screen background relative transition-all duration-500 text-textColor`}>
+            <Provider>
               <div className={"w-full h-10 sticky top-0 backdrop-blur"}>
                 <div className={"w-full h-full max-w-screen-xl mx-auto flex items-center justify-between px-5"}>
                   <div className={"cursor-pointer"}>
@@ -27,9 +22,8 @@ export default function RootLayout({
                   <ChangeTheme />
                 </div>
               </div>
-              {/*content*/}
               {children}
-            </ThemeProvider>
+            </Provider>
           </body>
       </html>
   );
