@@ -3,22 +3,18 @@ import { Button } from "@/components/ui/button";
 import { Unplug } from 'lucide-react';
 import {
 	Dialog,
-	DialogClose,
 	DialogContent,
 	DialogDescription,
-	DialogFooter,
-	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useConnect, Connector } from "wagmi"
+import { useConnect, Connector, useAccount, useDisconnect } from "wagmi"
 import Image from "next/image";
 import Link from "next/link";
 import { walletList } from "@/lib/constants";
-import { useRouter } from "next/navigation";
 import {useState} from "react";
+import { useMounted } from "@/hooks/useMounted";
+import AccountCard from "./_components/AccountCard"
 
 const descList = [
 	{
@@ -39,8 +35,18 @@ const descList = [
 ]
 
 export default function Home() {
-	let { connect, connectors, isPending } = useConnect();
+	let { connect, connectors } = useConnect({
+		mutation: {
+			onSuccess(data) {
+				handleOpenChange(false)
+			}
+		}
+	});
+	const { isConnecting, isConnected } = useAccount();
+	const { disconnect } = useDisconnect();
+	const mounted = useMounted();
 	const [icon, setIcon] = useState("");
+	const [open,setOpen] = useState(false);
 	connectors = connectors.filter(i => i.name !== "Injected")
 	const notInstalledWallets = walletList.filter((item) => {
 		return !connectors.some(connector => connector.name === item.name);
@@ -50,14 +56,29 @@ export default function Home() {
 		connect({connector})
 		setIcon(connector.icon!)
 	}
+	const handleOpenChange = (isOpen: boolean) => {
+		setOpen(isOpen)
+	}
+
+	if(!mounted) {
+		return <></>
+	}
+	if(isConnected) {
+		return (
+			<div className={"flex-1 flex items-center justify-center"}>
+				<AccountCard />
+			</div>
+		)
+	}
 	return (
 		<div className={"flex-1 flex items-center justify-center"}>
-			<Dialog>
+			<Dialog open={open} onOpenChange={handleOpenChange}>
 				<form>
 					<DialogTrigger asChild>
 						<Button
 							className={"rounded-full w-36 bg-sky-400 hover:bg-sky-500"}
 							variant={"expandIcon"}
+							onClick={() => handleOpenChange(true)}
 							Icon={Unplug}
 						>
 							Connect Wallet
@@ -98,7 +119,7 @@ export default function Home() {
 										</div>
 									)}
 									{
-										notInstalledWallets.length > 0 && notInstalledWallets.map((connector,index) => (
+										notInstalledWallets.length > 0 && notInstalledWallets.map((connector, index) => (
 											<Button
 												key={index}
 												onClick={() => window.open(connector.url, "_blank")}
@@ -113,7 +134,7 @@ export default function Home() {
 								</div>
 							</div>
 							{
-								isPending ?
+								isConnecting ?
 									<div className={"flex flex-col items-center justify-center"}>
 										<Image src={icon} alt={"Connecting..."} width={50} height={50}/>
 										Connecting...
@@ -137,7 +158,7 @@ export default function Home() {
 										<Link className={"w-full"} href={"https://ethereum.org/en/wallets/"} target={"_blank"}>
 											<Button
 												variant={"outline"}
-								        className={"w-full hover:text-sky-500 hover:border-sky-500 hover:bg-transparent"}
+												className={"w-full hover:text-sky-500 hover:border-sky-500 hover:bg-transparent"}
 											>
 												Learn More
 											</Button>

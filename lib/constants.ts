@@ -1,3 +1,4 @@
+// 用于维护支持的钱包列表
 export const walletList = [
 	{
 		name: "Trust Wallet",
